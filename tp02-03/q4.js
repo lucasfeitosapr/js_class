@@ -6,19 +6,24 @@ console.log("Iniciando Algoritmo Nr 04:");
 
 function generateRandomArray(min, max, quantidade) {
     let randomNumbers = [];
-    for(let i = min; i <= quantidade; i++) {
-        randomNumbers.push(Math.floor(Math.random() * (max+1)));
+    console.log("Min: ", min, "Max: ", max, "Qtd: ", quantidade);
+    for(let i = 0; i <= quantidade; i++) {
+        randomNumbers.push(Math.floor(Math.random() * (max - min + 1) + min));
     }
 
     let sortedNumbers = randomNumbers.sort(function(a, b){return a-b});
-
-    var labelResult = document.getElementById("labelResult");
+    console.log(randomNumbers);
+    var labelResult = document.getElementById("labelResultQ4");
     labelResult.innerHTML = `Números ordenados: ${sortedNumbers}`;
 }
 
 
 function generateLayout() {
     var divFour = document.getElementById("q4");
+
+    var labelQuestao = document.createElement('label');
+    labelQuestao.setAttribute("id","labelQuestao");
+    labelQuestao.innerHTML = "Questão 4";
 
     var labelValorMaximo = document.createElement('label');
     labelValorMaximo.setAttribute("for","inputValorMaximo");
@@ -33,7 +38,7 @@ function generateLayout() {
     labelQuantidadeNumeros.innerHTML = "Quantidade de números:";
 
     var labelResult = document.createElement('label');
-    labelResult.setAttribute("id","labelResult");
+    labelResult.setAttribute("id","labelResultQ4");
 
     var inputValorMaximo = document.createElement('input');
     inputValorMaximo.type = "number";
@@ -61,7 +66,7 @@ function generateLayout() {
         }
     });
     
-
+    divFour.appendChild(labelQuestao);
     divFour.appendChild(labelValorMinimo);
     divFour.appendChild(inputValorMinimo);
     divFour.appendChild(labelValorMaximo);

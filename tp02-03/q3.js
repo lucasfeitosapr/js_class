@@ -42,12 +42,16 @@ function generateLayout() {
     
     var divThree = document.getElementById("q3");
 
+    var labelQuestao = document.createElement('label');
+    labelQuestao.setAttribute("id","labelQuestao");
+    labelQuestao.innerHTML = "Questão 3";
 
     var labelResult = document.createElement('label');
     labelResult.setAttribute("id","labelResult");
 
     var button = generateButton(divThree);
 
+    divThree.appendChild(labelQuestao);
     divThree.appendChild(button);
     divThree.appendChild(labelResult);
 

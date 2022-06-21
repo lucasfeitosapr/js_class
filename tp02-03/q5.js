@@ -19,13 +19,17 @@ function checkTriangle(ladoUm, ladoDois, ladoTres) {
         response = "Escaleno";
     }
 
-    var labelResult = document.getElementById("labelResult");
+    var labelResult = document.getElementById("labelResultQ5");
     labelResult.innerHTML = `É um triângulo: ${response}`;
 
 }
 
 function generateLayout() {
     var divFive = document.getElementById("q5");
+
+    var labelQuestao = document.createElement('label');
+    labelQuestao.setAttribute("id","labelQuestao");
+    labelQuestao.innerHTML = "Questão 5";
 
     var labelLadoA = document.createElement('label');
     labelLadoA.setAttribute("for","inputLadoA");
@@ -40,7 +44,7 @@ function generateLayout() {
     labelLadoC.innerHTML = "Insira o Lado C:";
 
     var labelResult = document.createElement('label');
-    labelResult.setAttribute("id","labelResult");
+    labelResult.setAttribute("id","labelResultQ5");
 
     var inputLadoA = document.createElement('input');
     inputLadoA.type = "number";
@@ -68,7 +72,7 @@ function generateLayout() {
         }
     });
     
-
+    divFive.appendChild(labelQuestao)
     divFive.appendChild(labelLadoA);
     divFive.appendChild(inputLadoA);
     divFive.appendChild(labelLadoB);

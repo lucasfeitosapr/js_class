@@ -12,12 +12,16 @@ function calcMultiplos(min, max) {
         }
     }
 
-    var labelResult = document.getElementById("labelResult");
+    var labelResult = document.getElementById("labelResultQ1");
     labelResult.innerHTML = `Total de múltiplos de 2 e 3 é: ${count}`;
 }
 
 function generateLayout() {
     var divOne = document.getElementById("q1");
+
+    var labelQuestao = document.createElement('label');
+    labelQuestao.setAttribute("id", "labelQuestao");
+    labelQuestao.innerHTML = "Questão 1";
 
     var labelValorMaximo = document.createElement('label');
     labelValorMaximo.setAttribute("for","inputValorMaximo");
@@ -28,7 +32,7 @@ function generateLayout() {
     labelValorMinimo.innerHTML = "Valor mínimo";
 
     var labelResult = document.createElement('label');
-    labelResult.setAttribute("id","labelResult");
+    labelResult.setAttribute("id","labelResultQ1");
 
     var inputValorMaximo = document.createElement('input');
     inputValorMaximo.type = "number";
@@ -57,7 +61,7 @@ function generateLayout() {
         }
     });
     
-
+    divOne.appendChild(labelQuestao);
     divOne.appendChild(labelValorMinimo);
     divOne.appendChild(inputValorMinimo);
     divOne.appendChild(labelValorMaximo);

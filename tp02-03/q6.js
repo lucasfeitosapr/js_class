@@ -16,8 +16,13 @@ if(userLogged) {
 function generateLogin() {
 
     var divSix = document.getElementById("q6");
+
     var container = document.createElement("div");
     container.setAttribute("id","container")
+
+    var labelQuestao = document.createElement('label');
+    labelQuestao.setAttribute("id","labelQuestao");
+    labelQuestao.innerHTML = "Questão 6";
 
     var loginForm = document.createElement("form");
 
@@ -37,6 +42,7 @@ function generateLogin() {
     loginForm.appendChild(inputEmail);
     loginForm.appendChild(inputSenha);
     
+    container.appendChild(labelQuestao);
     container.appendChild(loginForm);
     container.appendChild(loginButton);
     container.appendChild(registerButton);

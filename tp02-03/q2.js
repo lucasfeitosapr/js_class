@@ -21,7 +21,12 @@ function fatorial(n) {
 
 
 function generateLayout() {
-    var divOne = document.getElementById("q2");
+    var divTwo = document.getElementById("q2");
+
+    var labelQuestao = document.createElement('label');
+    labelQuestao.setAttribute("id","labelQuestao");
+    labelQuestao.innerHTML = "Questão 2";
+ 
 
     var labelValor = document.createElement('label');
     labelValor.setAttribute("for","valor");
@@ -35,14 +40,15 @@ function generateLayout() {
     })
 
     var labelResult = document.createElement('label');
-    labelResult.setAttribute("id","labelResult");
+    labelResult.setAttribute("id","labelResultQ2");
 
     var button = generateButton(inputValor);
 
-    divOne.appendChild(labelValor);
-    divOne.appendChild(inputValor);
-    divOne.appendChild(button);
-    divOne.appendChild(labelResult);
+    divTwo.appendChild(labelQuestao);
+    divTwo.appendChild(labelValor);
+    divTwo.appendChild(inputValor);
+    divTwo.appendChild(button);
+    divTwo.appendChild(labelResult);
 
 
 }
@@ -65,7 +71,7 @@ function generateButton(inputValor) {
     calcButton.addEventListener("click", function () {
         if(hasValidValues(inputValor.valueAsNumber)) {
             console.log("Valid values")
-            var labelResult = document.getElementById("labelResult");
+            var labelResult = document.getElementById("labelResultQ2");
 
             const startTime = Date.now();
 
