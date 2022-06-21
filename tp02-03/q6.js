@@ -1,27 +1,17 @@
-// Criar um componente para criação de usuário e login em aplicação(sign up/ sign in).
-
-// No 1o cenário, antes de estar logado, o visitante se depara com o formulário de login ou de criação de usuário. Se for feito o login com sucesso, o componente deve levar ao cenário 2, se falhar ele deve alertar o usuário e voltar ao início do cenário 1. Se o usuário optar por criar um usuário, o componente deve criar o registro de um novo usuário e voltar para início do cenário 1.
-
-// No cenário 2, após logado, mostrar apenas um texto de logado no componente e um botão (ou link) para deslogar, retornando ao início do cenário 1.
-
-// Deve ser possível criar múltiplos usuários e, se fechada, a página não pode perder os registros de usuários  armazenados.
-
-
-//criar formulário de login - ok
-//criar formulario de registro - ok
-//criar comp de logado com botão de logout que volta para a tela de login - ok
-//salvar no localstorage as coisas
-
 let users = JSON.parse(localStorage.getItem("users"));
-if(users == null || users.length == 0) {
+let userLogged = JSON.parse(localStorage.getItem("userLogged"));
+
+console.log("User logado", userLogged);
+
+if (users == null || users.length == 0) {
     users = [];
-    generateRegister();
+}
+
+if(userLogged) {
+    generateLoggedIn();
 } else {
     generateLogin();
 }
-
-//generateRegister();
-//generateLoggedIn();
 
 function generateLogin() {
 
@@ -32,16 +22,16 @@ function generateLogin() {
     var loginForm = document.createElement("form");
 
     var inputEmail = document.createElement('input');
-    inputEmail.setAttribute("id","inputEmail");
+    inputEmail.setAttribute("id","email");
     inputEmail.placeholder = "Email";
     inputEmail.type = "text";
 
     var inputSenha = document.createElement('input');
-    inputSenha.setAttribute("id","inputSenha");
+    inputSenha.setAttribute("id","senha");
     inputSenha.placeholder = "Senha";
-    inputSenha.type = "text";
+    inputSenha.type = "password";
 
-    var loginButton = generateLoginButton(divSix);
+    var loginButton = generateLoginButton(loginForm);
     var registerButton = generateRegisterButton();
 
     loginForm.appendChild(inputEmail);
@@ -56,23 +46,23 @@ function generateLogin() {
 }
 
 
-function generateLoginButton(inputValor) {
+function generateLoginButton(loginForm) {
     var loginButton = document.createElement('button');
     loginButton.setAttribute("id","loginButton");
     loginButton.innerHTML = "Login";
     loginButton.addEventListener("click", function () {
-        if(hasValidValues(inputValor.valueAsNumber)) {
-            // console.log("Valid values")
-            // var labelResult = document.getElementById("labelResult");
 
-            // const startTime = Date.now();
-
-            // var result = fatorial(inputValor.valueAsNumber);
-            
-            // const duration = Date.now() - startTime;
-
-
-            // labelResult.innerHTML = `${inputValor.value}! = ${result} (${duration} milisegundos)`
+        var isValid = validateLogin(loginForm);
+        if(isValid) {
+            var userExists = verifyLogin(loginForm);
+            if(userExists) {
+                deleteLoginScreen();
+                generateLoggedIn();
+                userLogged = true;
+                localStorage.setItem("userLogged", JSON.stringify(true));
+            } else {
+                alert("Email ou senha inválidos!");
+            }
         } else {
             alert("Valores inválidos!");
         }
@@ -147,21 +137,51 @@ function generateSaveButton(registerForm) {
     saveButton.setAttribute("id","saveButton");
     saveButton.innerHTML = "Salvar";
     saveButton.addEventListener("click", function() {
-        //validate input
         var hasValidValues = validateForms(registerForm);
         if(hasValidValues) {
-            alert("Usuário cadastrado com sucesso!");
-            saveUser(registerForm);
-            deleteRegisterScreen();
-            generateLogin();
+            if(userDoesNotExists(registerForm)) {
+                alert("Usuário cadastrado com sucesso!");
+                saveUser(registerForm);
+                deleteRegisterScreen();
+                generateLogin();
+            } else {
+                alert("Usuário já existe!");
+            }
+            
         } else {
             alert("Insira todas as informações!")
         }
-        //destroy register on correct input
-        //show alerts
+
     });
 
     return saveButton;
+}
+
+function validateLogin(forms) {
+    var email = forms.email.value;
+    var senha = forms.senha.value;
+
+    if(isEmpty(email) || isEmpty(senha)) {
+        return false;
+    }
+
+    return true;
+
+}
+
+function verifyLogin(forms) {
+    var email = forms.email.value;
+    var senha = forms.senha.value;
+    console.log("Email: ", email, "Senha: ", senha)
+    for(let i = 0; i < users.length; i++) {
+        console.log("Email: ", users[i].email, "Senha: ", users[i].password)
+        if(users[i].email === email && users[i].password === senha) {
+
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function validateForms(registerForm) {
@@ -182,15 +202,32 @@ function validateForms(registerForm) {
 function generateLoggedIn() {
     var divSix = document.getElementById("q6");
 
+    var container = document.createElement("div");
+    container.setAttribute("id", "containerLogged");
+
     var loggedLabel = document.createElement('label');
     loggedLabel.innerHTML = "Usuário logado!";
 
     var logoutButton = document.createElement('button');
     logoutButton.setAttribute("id","logoutButton");
     logoutButton.innerHTML = "Sair";
+    logoutButton.addEventListener("click", function() {
+        deleteLoggedScreen();
+        generateLogin();
+    })
 
-    divSix.appendChild(loggedLabel);
-    divSix.appendChild(logoutButton);
+    container.appendChild(loggedLabel);
+    container.appendChild(logoutButton);
+
+    divSix.appendChild(container);
+}
+
+function deleteLoggedScreen() {
+    var container = document.getElementById("containerLogged");
+    var divSix = document.getElementById("q6");
+
+    localStorage.setItem("userLogged", JSON.stringify(false));
+    divSix.removeChild(container);
 }
 
 function deleteLoginScreen() {
@@ -214,8 +251,21 @@ function saveUser(form) {
 
     var user = new User(nome, idade, email, senha);
     users.push(user);
+
     localStorage.setItem("users", JSON.stringify(users));
     console.log(users);
+}
+
+function userDoesNotExists(form) {
+    var email = form.email.value;
+
+    for(let i = 0; i < users.length; i++) {
+        if(users[i].email === email) {
+            return false;
+        }
+    }
+
+    return true;;
 }
 
 function isEmpty(str) {
